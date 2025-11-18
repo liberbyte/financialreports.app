@@ -1,0 +1,107 @@
+{
+  "@context": "https://financiareports.app/schema",
+  "@type": "annual-report",
+  "event-type-version": "v0.001",
+  "event-type-description": "Event type representing a single annual financial report PDF for a specific entity and fiscal year, served via Dataland",
+  "event-type-search-fields": [
+    "@sub-type[0].name",
+    "@sub-type[0].description"
+  ],
+  "@sub-type": [
+    {
+      "@context": "https://schema.org",
+      "@type": "APIReference",
+      "name": "Dataland Annual Report API",
+      "description": "API (hosted on dataland.com) for retrieving a single annual financial report as a PDF for a given entity and fiscal year.",
+      "url": "https://dataland.com/api/annual-report",
+      "license": "https://dataland.io/terms",
+      "contentType": "application/pdf",
+      "isAccessibleForFree": true,
+      "datePublished": "2025-01-01",
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Financial analysts, auditors, accountants, regulatory authorities"
+      },
+      "provider": {
+        "@type": "Organization",
+        "name": "Dataland",
+        "url": "https://dataland.com"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://dataland.com/api/annual-report?entity-name={entity-name}&fiscal-year={fiscal-year}",
+        "query-input": "required name=entity-name, fiscal-year"
+      },
+      "measuredProperty": [
+        {
+          "@type": "PropertyValue",
+          "name": "Entity Name",
+          "propertyID": "ENTITY_NAME",
+          "description": "Name of the reporting entity.",
+          "unitText": "string"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "Fiscal Year",
+          "propertyID": "FISCAL_YEAR",
+          "description": "Fiscal year of the annual report.",
+          "unitText": "integer"
+        },
+        {
+          "@type": "PropertyValue",
+          "name": "Report File URL",
+          "propertyID": "REPORT_FILE",
+          "description": "URL to download the annual report PDF.",
+          "unitText": "URL"
+        }
+      ],
+      "openapi": {
+        "openapi": "3.0.0",
+        "info": {
+          "title": "Dataland Annual Report API",
+          "version": "1.0.0",
+          "description": "API to retrieve a single annual financial report PDF via dataland.com for a specific entity and fiscal year."
+        },
+        "servers": [
+          {
+            "url": "https://dataland.com/api"
+          }
+        ],
+        "paths": {
+          "/annual-report": {
+            "get": {
+              "summary": "Retrieve an annual report PDF from Dataland",
+              "parameters": [
+                {
+                  "name": "entity-name",
+                  "in": "query",
+                  "required": true,
+                  "schema": { "type": "string", "example": "Acme Corp" }
+                },
+                {
+                  "name": "fiscal-year",
+                  "in": "query",
+                  "required": true,
+                  "schema": { "type": "integer", "example": 2025 }
+                }
+              ],
+              "responses": {
+                "200": {
+                  "description": "Annual report PDF for the requested entity and fiscal year",
+                  "content": {
+                    "application/pdf": {
+                      "schema": { "type": "string", "format": "binary" }
+                    }
+                  }
+                },
+                "404": {
+                  "description": "Report not found for the given entity and year"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
